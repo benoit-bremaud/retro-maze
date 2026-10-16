@@ -3,7 +3,7 @@
 ## Context
 
 Who interacts with the game, and to do what. Goals are actor-initiated; game events (a ghost
-leaves the house, Elroy starts) are triggers inside *Clear a maze*, not use cases.
+leaves the house, Fury starts) are triggers inside *Clear a maze*, not use cases.
 
 ```mermaid
 flowchart LR

@@ -4,7 +4,7 @@
 
 ## Context
 
-retro-maze is a 224 × 288 tile-based game with six moving actors. Its hard requirements
+retro-maze is a 224 × 288 tile-based game with five moving actors and a bonus item. Its hard requirements
 (CLAUDE.md, GDD §12) are a fixed 60 Hz deterministic simulation, a domain that never imports
 the browser, no allocation in the loop, and headless simulation tests. The sibling project
 retro-shmup already ships a TypeScript + Canvas 2D + Vite stack that meets the same
@@ -24,7 +24,7 @@ Scores 0–5. Weights proposed in brick 0, validated by the owner at the study P
 | Bundle size / first load | 10 | 5 — tens of kB | 3 — ~1 MB | 0 — tens of MB of wasm |
 | Headless testability (Vitest) | 20 | 5 — pure domain | 4 — domain testable, scene glue not | 1 — engine runtime required |
 | Ecosystem / tooling for free | 25 | 3 — we write sprites, input, audio ourselves (already done once) | 5 | 5 |
-| **Total / 500** | 100 | **450** | 395 | 265 |
+| **Total / 500** | 100 | **450** | 395 | 245 |
 
 Points: A = 125 + 100 + 50 + 100 + 75; B = 100 + 60 + 30 + 80 + 125; C = 100 + 0 + 0 + 20 + 125.
 

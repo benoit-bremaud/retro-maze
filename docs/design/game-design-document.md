@@ -48,6 +48,9 @@ Game rules and mechanics are not protected by copyright; their expression is. Th
 
 Ember starts outside the house; Bloom, Tide and Dusk start inside (§7).
 
+Colours above are role placeholders. The assets brick picks a palette and silhouettes
+distinct from the reference's trade dress (ADR-0004).
+
 ## 3.1 Screen
 
 - Logical screen **224 × 288 px** = 28 × 36 tiles of **8 × 8 px**.
@@ -94,6 +97,7 @@ Coordinates below are maze tiles `(col, row)`, origin top-left of the maze, 0 �
 ############################  30
 ```
 
+Rows 29–30 are a solid bottom margin (keeps the maze at the reference's 31 rows).
 Legend: `#` wall, `.` dot, `o` energizer, space = corridor without dot, `-` ghost-house door
 (passable only by ghosts leaving or returning as eyes).
 
@@ -104,7 +108,7 @@ maze in the maze brick):
   outside the house.
 - **270 dots + 4 energizers = 274 pellets.** (The reference maze has 244; thresholds below
   that count *eaten* pellets keep the reference values, thresholds that count *remaining*
-  pellets — Elroy — keep them too, since both express the same pacing.)
+  pellets — Fury — keep them too, since both express the same pacing.)
 - **Ghost house:** interior rows 12–14, cols 10–17; door row 11, cols 12–15. Exit tile: row
   10, between cols 13 and 14.
 - **Hero start:** row 22, between cols 13 and 14, facing left.
@@ -120,7 +124,7 @@ maze in the maze brick):
 ### 5.1 Speeds
 
 100 % = 75.757 576 px/s (reference full speed), i.e. 1.262 6 px per 60 Hz step. Movement is
-integrated in fixed point (1/256 px) so that speeds are exact and deterministic.
+integrated in fixed point (1/256 px) so that movement is deterministic (sub-pixel remainders carried, never rounded away).
 
 | Levels | Hero | Hero eating dots | Ghost | Ghost in tunnel | Hero frightened | Hero frightened eating | Ghost frightened |
 |---|---|---|---|---|---|---|---|
@@ -130,7 +134,7 @@ integrated in fixed point (1/256 px) so that speeds are exact and deterministic.
 | 21+ | 90 % | 79 % | 95 % | 50 % | — | — | — |
 
 Eaten ghosts (eyes) move at 200 % *(reference: fastest speed in the game; exact value unknown,
-ours)*. Elroy speeds: §8.
+ours)*. Fury speeds: §8.
 
 The reference expresses the "eating dots" slowdown as the hero **skipping frames**: one frame
 per dot, three per energizer. We implement that literal rule (1 and 3 steps of no movement);
@@ -143,7 +147,8 @@ the table's "eating" column is the resulting average and documents it.
 - The desired direction (latest input) is buffered and applied as soon as it becomes legal.
 - **Cornering (pre-turn / post-turn):** when the desired direction is perpendicular and the
   target tile in that direction is open, the hero may start the turn up to **4 px before** the
-  tile centre (pre-turn) or finish it up to **3 px after** (post-turn), moving diagonally — the
+  tile centre (pre-turn) or finish it up to **3 px after** (post-turn) *(ours, to tune: the
+  reference's window depends on speed)*, moving diagonally — the
   movement on both axes at full speed — until it is centred on the new axis. This makes
   cornering faster than the ghosts' square turns, as in the reference.
 - Reversal is instantaneous and always allowed.
@@ -179,8 +184,8 @@ the table's "eating" column is the resulting average and documents it.
 
 | Ghost | Target tile |
 |---|---|
-| Ember | (25, −4) top right |
-| Bloom | (2, −4) top left |
+| Ember | (25, −3) top right |
+| Bloom | (2, −3) top left |
 | Tide | (27, 31) bottom right |
 | Dusk | (0, 31) bottom left |
 
@@ -240,8 +245,8 @@ The 1/60 s scatter is one step: its only effect is the forced reversal, kept on 
 - Fright time 0: ghosts reverse but do not turn blue.
 - A flash = 14 steps blue + 14 steps white *(ours: the reference value is not documented
   precisely)*. Under the reduced-flash option the white phase uses a low-contrast tint.
-- Eating another energizer while frightened restarts the timer and the combo (§9.2) is
-  **not** reset.
+- Eating another energizer while frightened restarts the timer and resets the combo to
+  200 (§9.2).
 - Ghosts in the house during fright are frightened too (blue) but are not released faster.
 
 ## 7. Ghost house release
@@ -278,12 +283,12 @@ starts at 0 and counts pellets eaten:
 If the hero eats nothing for **4 s** (levels 1–4) or **3 s** (levels 5+), the next waiting
 ghost is released and the timer resets. The timer resets on every pellet eaten.
 
-## 8. Elroy — two-stage speed-up of Ember
+## 8. Fury — two-stage speed-up of Ember
 
 When the number of **remaining** pellets falls to the threshold, Ember changes speed, and in
-Elroy mode it **keeps targeting the hero during scatter** (as in the reference, a feature).
+Fury mode it **keeps targeting the hero during scatter** (as in the reference, a feature).
 
-| Level | Elroy 1: remaining ≤ | speed | Elroy 2: remaining ≤ | speed |
+| Level | Fury 1: remaining ≤ | speed | Fury 2: remaining ≤ | speed |
 |---|---|---|---|---|
 | 1 | 20 | 80 % | 10 | 85 % |
 | 2 | 30 | 90 % | 15 | 95 % |
@@ -295,7 +300,7 @@ Elroy mode it **keeps targeting the hero during scatter** (as in the reference, 
 | 15–18 | 100 | 100 % | 50 | 105 % |
 | 19+ | 120 | 100 % | 60 | 105 % |
 
-After a death Elroy is suspended until Dusk has left the house.
+After a death Fury is suspended until Dusk has left the house.
 
 ## 9. Scoring, fruit, lives, levels
 
@@ -305,8 +310,8 @@ Dot: 10 points. Energizer: 50 points.
 
 ### 9.2 Ghost-eating combo
 
-Within one energizer's fright period: 200, 400, 800, 1 600. The combo counter resets when the
-fright period ends (not when another energizer is eaten during it). Eating a ghost freezes the
+Within one energizer's fright period: 200, 400, 800, 1 600. The combo restarts at 200 on every
+energizer eaten (so 4 energizers × 3 000 = 12 000 points per level at most). Eating a ghost freezes the
 game for 1 s while the points are displayed *(the reference shows the score; duration ours)*.
 
 ### 9.3 Fruit *(art and names ours)*
@@ -336,7 +341,7 @@ required).
   step (*bug removed:* the reference misses swaps and lets ghosts pass through). Checked after
   every hero move and every ghost move.
 - Death: freeze 1 s, death animation, restart positions, global counter (§7.2).
-- Level clear: all 274 pellets eaten → maze flash 2 s, next level, counters and Elroy reset.
+- Level clear: all 274 pellets eaten → maze flash 2 s, next level, counters and Fury reset.
 - No kill screen: levels continue indefinitely with the 21+ row (*bug removed:* level 256).
 - Intermission cut-scenes: none in 1.0 (the reference's cut-scenes are expression, not rules).
 
@@ -364,7 +369,7 @@ Touch input *(ours)*: swipe sets the desired direction; no on-screen pad by defa
 | Unseeded frightened turns (pseudo-random from ROM) | §6.1 — seeded RNG |
 
 Kept on purpose because they are rules players rely on: no-up zones, the 1/60 s scatter
-reversal, Elroy chasing in scatter, cornering.
+reversal, Fury chasing in scatter, cornering.
 
 ## 12. Non-functional
 

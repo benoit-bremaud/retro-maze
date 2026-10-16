@@ -25,17 +25,32 @@ stateDiagram-v2
   Frightened --> Eaten : hero on same tile or swap / score combo
   Eaten --> Entering : at exit tile
   Entering --> Leaving : revived at house centre
-  state Chase {
-    [*] --> Normal
-    Normal --> Elroy1 : Ember and remaining ≤ threshold 1
-    Elroy1 --> Elroy2 : remaining ≤ threshold 2
-  }
+```
+
+Fury is orthogonal to the mode above (it applies in scatter and chase alike), so it has its
+own machine, owned by `FuryRule` for Ember only:
+
+```mermaid
+---
+title: stm EmberFury
+---
+stateDiagram-v2
+  [*] --> Normal
+  Normal --> Fury1 : remaining ≤ threshold 1
+  Fury1 --> Fury2 : remaining ≤ threshold 2
+  Fury1 --> Suspended : hero dies
+  Fury2 --> Suspended : hero dies
+  Suspended --> Fury1 : Dusk has left the house [remaining ≤ threshold 1]
+  Suspended --> Normal : Dusk has left the house [otherwise]
+  Normal --> [*] : level clear
+  Fury1 --> [*] : level clear
+  Fury2 --> [*] : level clear
 ```
 
 ## Notes
 
 - Energizer with fright time 0: Scatter/Chase reverse but stay in place (no `Frightened`).
-- Elroy applies to Ember only, also in scatter (Ember keeps the chase target); suspended after
-  a death until Dusk leaves the house (GDD §8). Drawn inside `Chase` for readability.
+- In Fury 1 / 2 Ember uses the Fury speed and keeps its chase target in scatter (GDD §8);
+  from `Suspended` the stage is recomputed from the remaining pellets.
 - Ghosts in the house during an energizer turn blue but stay `InHouse` (GDD §6.5).
 - Leaving frightened never reverses (GDD §5.3).

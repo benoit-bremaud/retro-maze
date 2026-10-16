@@ -28,12 +28,12 @@ Points: A = 120 + 100 + 75 + 100 + 75; B = 150 + 60 + 15 + 40 + 15; C = 90 + 20 
 ## Decision
 
 1. **Domain unit tests, TDD (Red / Green / Refactor):** every GDD table (speeds, schedule,
-   fright, dot counters, Elroy, fruit) is data with a test per row family; targeting, the
+   fright, dot counters, Fury, fruit) is data with a test per row family; targeting, the
    tie-break order, no-up zones, forced reversal, cornering, swap collisions.
 2. **Maze tests:** the parsed maze is symmetric, connected, has no dead end and holds 274
    pellets.
 3. **Headless simulation tests:** a seed plus a scripted input sequence run N steps and assert
-   events (ghost releases at the right pellet counts, Elroy thresholds, level clear), and that
+   events (ghost releases at the right pellet counts, Fury thresholds, level clear), and that
    two runs produce identical state hashes.
 4. **One browser smoke test** (Playwright, Chromium / Firefox / WebKit): boot, start, move,
    persistence of the top 10 across a reload.

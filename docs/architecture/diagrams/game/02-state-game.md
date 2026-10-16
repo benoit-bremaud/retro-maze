@@ -20,7 +20,7 @@ stateDiagram-v2
   Dying --> Ready : lives > 0 / reset positions, global counter on
   Dying --> GameOver : lives == 0
   Playing --> LevelClear : 274 pellets eaten
-  LevelClear --> Ready : after 2 s / level + 1, counters and Elroy reset
+  LevelClear --> Ready : after 2 s / level + 1, counters and Fury reset
   GameOver --> NameEntry : score in top 10
   GameOver --> HallOfFame : otherwise
   NameEntry --> HallOfFame : name confirmed / save

@@ -5,7 +5,7 @@
 ## Context
 
 The genre's appeal rests on learnable ghost behaviour: players expect cornering, the four
-personalities, scatter waves and Elroy to work as in the 1980 reference, documented in detail
+personalities, scatter waves and Fury to work as in the 1980 reference, documented in detail
 by The Pac-Man Dossier (Pittman). The reference also contains defects: the up-direction
 targeting overflow, ghosts passing through the hero on a swap, the global dot counter that is
 never deactivated, the level-256 split screen, ROM-seeded pseudo-random fright turns.
@@ -32,7 +32,7 @@ Sensitivity: C wins only if *Effort* becomes the dominant criterion.
 
 Implement the GDD tables (§5–§9) as written. The removed bugs are listed in GDD §11; behaviour
 that looks like a quirk but is a rule players rely on (no-up zones, 1/60 s scatter reversal,
-Elroy chasing in scatter, cornering) is kept.
+Fury chasing in scatter, cornering) is kept.
 
 ## Consequences
 

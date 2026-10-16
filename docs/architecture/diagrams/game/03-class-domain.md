@@ -41,7 +41,7 @@ classDiagram
   }
   class TargetingStrategy {
     <<interface>>
-    +chaseTarget(hero, ember, out) void
+    +chaseTarget(self, hero, ember, out) void
   }
   class ChaserTarget
   class AmbusherTarget
@@ -57,13 +57,13 @@ classDiagram
     +onIdleTick() void
     +onDeath() void
   }
-  class ElroyRule {
+  class FuryRule {
     +stage(remaining, level) number
   }
   class BonusItem
   class LevelTables {
     <<data>>
-    speeds, schedule, fright, dotLimits, elroy, bonus
+    speeds, schedule, fright, dotLimits, fury, bonus
   }
   class RandomPort {
     <<interface>>
@@ -76,7 +76,7 @@ classDiagram
   Game *-- ModeSchedule
   Game *-- FrightTimer
   Game *-- HouseRelease
-  Game *-- ElroyRule
+  Game *-- FuryRule
   Game *-- "0..1" BonusItem
   Game ..> LevelTables
   Ghost --> TargetingStrategy
