@@ -7,7 +7,7 @@ human context: what was done, why, and by which PR.
 
 ## 2026-10-16
 
-### Brick 0 — design study (branch `docs/study`)
+### Brick 0 — design study (#1)
 
 - Owner decision (MCDA, 2026-10-16): a maze-chase arcade game under the codename retro-maze,
   sibling of `../retro-shmup`. Only the study now; implementation waits for retro-shmup's
@@ -25,4 +25,9 @@ human context: what was done, why, and by which PR.
 - Pre-push review: 2 Must fixed (combo resets on each energizer, Godot total 245), Should fixed
   (Elroy nickname renamed Fury, Fury as its own state machine, shy targeting signature,
   scatter corners at row −3); Nice partly fixed (cornering marked ours, palette placeholder).
-- Pending: owner approval to create the public GitHub repository and the PR.
+- Public repository `benoit-bremaud/retro-maze` created with owner approval; PR #1 opened,
+  MCDA weights approved by the owner in review, merged. No CI and no Copilot review yet (not a
+  collaborator); pre-merge gate reduced to docs checks (Mermaid render, gitleaks, links) since
+  there is no code.
+- Next: nothing until retro-shmup's vertical slice; then the engine brick (copy modules per
+  ADR-0003, CI security baseline).
